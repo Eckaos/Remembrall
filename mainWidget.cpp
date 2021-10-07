@@ -88,6 +88,7 @@ void MainWidget::onNewTaskButtonReleased(){
 		t.setName(taskTitleLine->text());
 		currentAgenda->addTask(t);	
 		taskTitleLine->clear();
+		//TODO open file in overwrite get the jsonObject and write it
 	}
 }
 
