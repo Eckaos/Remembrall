@@ -34,3 +34,4 @@ Makefile
 .ccls-cache
 compile_commands.json
 .qmake.stash
+json
