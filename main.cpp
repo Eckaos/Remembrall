@@ -8,6 +8,7 @@ int main(int argc, char *argv[]){
 	QRect rec = app.primaryScreen()->availableGeometry();
 	w.resize(rec.width(),rec.height());
 	w.show();
+	app.setWindowIcon(QIcon("Remembrall-2-icon.png"));
 
 	return app.exec();
 }

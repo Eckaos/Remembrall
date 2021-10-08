@@ -110,6 +110,9 @@ void MainWidget::onDeleteAgendaButtonReleased(){
 	QString s(fileList->getFileList().at(index).fileName());
 	fileList->deleteFile(s);
 	agendaModelList.removeAt(index);
+	if(agendaModelList.isEmpty()){
+		agendaListView->setModel(NULL);
+	}
 }
 
 void MainWidget::createTask(QString s, QDate d){
