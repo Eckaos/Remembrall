@@ -7,15 +7,15 @@
 MainWidget::MainWidget(QWidget *parent) : QWidget(parent){
 	newAgendaButton = new QPushButton(tr("+"));	
 	deleteAgendaButton = new QPushButton(tr("-"));
-	nameAgendaLine = new QLineEdit();
 	
 	newTaskButton = new QPushButton(tr("New Task"));
 	deleteTaskButton = new QPushButton(tr("Delete Task"));
-	taskTitleLine = new QLineEdit();
-	taskDatePicker = new QDateEdit();
 
 	taskListView = new QListView();
 	agendaListView = new QListView();
+
+	taskDialog = new TaskDialog();
+	agendaDialog = new NameInputDialog("Agenda");
 
 	QVBoxLayout *mainLayout = new QVBoxLayout();
 	QHBoxLayout *listBox = new QHBoxLayout();
@@ -31,12 +31,9 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent){
 	buttonsBarAgenda->addWidget(deleteAgendaButton);
 	
 	toolBarAgenda->addLayout(buttonsBarAgenda);
-	toolBarAgenda->addWidget(nameAgendaLine);
 	
 	toolBarTask->addWidget(newTaskButton);
 	toolBarTask->addWidget(deleteTaskButton);
-	toolBarTask->addWidget(taskTitleLine);
-	toolBarTask->addWidget(taskDatePicker);
 
 	toolBar->addLayout(toolBarAgenda, 10);
 	toolBar->addLayout(toolBarTask, 90);
@@ -51,8 +48,6 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent){
 
 	setLayout(mainLayout);
 
-	taskDatePicker->setDate(QDate::currentDate());
-	
 	setWindowTitle(tr("Agenda"));
 	
 	connect(newTaskButton, SIGNAL(released()), this, SLOT(onNewTaskButtonReleased()));
@@ -61,6 +56,8 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent){
 	connect(newAgendaButton, SIGNAL(released()), this, SLOT(onNewAgendaButtonReleased()));
 	connect(deleteAgendaButton,SIGNAL(released()),this, SLOT(onDeleteAgendaButtonReleased()));
 	connect(agendaListView->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(onAgendaClick(QItemSelection)));
+	connect(taskDialog, SIGNAL(validate(QString, QDate)), this ,SLOT(createTask(QString, QDate)));
+	connect(agendaDialog, SIGNAL(validate(QString)), this, SLOT(createAgenda(QString)));
 }
 
 
@@ -68,33 +65,20 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent){
 MainWidget::~MainWidget(){
 	delete newTaskButton;
 	delete deleteTaskButton;
-	delete taskTitleLine;
-	delete taskDatePicker;
 
 	delete newAgendaButton;
 	delete deleteAgendaButton;
-	delete nameAgendaLine;
 	
 	delete taskListView;
 	delete agendaListView;
 	qDeleteAll(agendaModelList);
 	agendaModelList.clear();
+	delete agendaDialog;
+	delete taskDialog;
 }
 
 void MainWidget::onNewTaskButtonReleased(){
-	if(currentAgenda != NULL && taskTitleLine->text() != ""){
-		Task t;
-		t.setDate(taskDatePicker->date());
-		t.setName(taskTitleLine->text());
-		currentAgenda->addTask(t);	
-		taskTitleLine->clear();
-		//TODO open file in overwrite get the jsonObject and write it
-		QFile file("json/"+agendaListView->currentIndex().data().toString()+".json");
-		file.open(QIODevice::WriteOnly);
-		QJsonObject jObj = QJsonDocument().object();
-		currentAgenda->write(jObj);
-		file.write(QJsonDocument(jObj).toJson());
-	}
+	taskDialog->open();
 }
 
 void MainWidget::onDeleteTaskButtonReleased(){
@@ -114,16 +98,11 @@ void MainWidget::onAgendaClick(QItemSelection item){
 	if(!item.indexes().isEmpty()){
 		taskListView->setModel(agendaModelList.at(agendaListView->currentIndex().row()));
 		currentAgenda = agendaModelList.at(agendaListView->currentIndex().row());
-	}		
+	}
 }
 
 void MainWidget::onNewAgendaButtonReleased(){
-	QString s(nameAgendaLine->text());
-	fileList->addFile(s);
-	nameAgendaLine->clear();
-	Agenda* a = new Agenda;
-	a->read(fileList->loadAgenda(s));
-	agendaModelList.append(a);	
+	agendaDialog->open();
 }
 
 void MainWidget::onDeleteAgendaButtonReleased(){
@@ -131,4 +110,25 @@ void MainWidget::onDeleteAgendaButtonReleased(){
 	QString s(fileList->getFileList().at(index).fileName());
 	fileList->deleteFile(s);
 	agendaModelList.removeAt(index);
+}
+
+void MainWidget::createTask(QString s, QDate d){
+	if(currentAgenda != NULL && s!=""&& s != NULL){
+		Task t(s,d);
+		currentAgenda->addTask(t);
+		QFile file("json/"+agendaListView->currentIndex().data().toString()+".json");
+		file.open(QIODevice::WriteOnly);
+		QJsonObject jObj = QJsonDocument().object();
+		currentAgenda->write(jObj);
+		file.write(QJsonDocument(jObj).toJson());
+	}
+}
+
+void MainWidget::createAgenda(QString s){
+	if(s != "" && s != NULL){
+		fileList->addFile(s);
+		Agenda* a = new Agenda;
+		a->read(fileList->loadAgenda(s));
+		agendaModelList.append(a);	
+	}
 }

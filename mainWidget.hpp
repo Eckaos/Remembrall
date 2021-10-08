@@ -4,7 +4,10 @@
 #include <QWidget>
 #include "agenda.hpp"
 #include "jsonFileList.hpp"
+#include <QInputDialog>
 #include <QItemSelection>
+#include "taskWindowDialog.hpp"
+#include "nameInputDialog.hpp"
 
 class QPushButton;
 class QListView;
@@ -23,16 +26,15 @@ class MainWidget : public QWidget {
 		void onNewAgendaButtonReleased();
 		void onDeleteAgendaButtonReleased();
 		void onAgendaClick(QItemSelection item);
+		void createTask(QString s, QDate d);
+		void createAgenda(QString s);
 
 	private:
 		QPushButton* newAgendaButton;
 		QPushButton* deleteAgendaButton;
-		QLineEdit* nameAgendaLine;
 		
 		QPushButton* newTaskButton;
 		QPushButton* deleteTaskButton;
-		QLineEdit* taskTitleLine;
-		QDateEdit* taskDatePicker;
 		
 		QListView* taskListView;
 		QListView* agendaListView;
@@ -40,6 +42,8 @@ class MainWidget : public QWidget {
 		QList<Agenda*> agendaModelList;
 		JsonFileList* fileList;
 		Agenda* currentAgenda;
+		TaskDialog* taskDialog;
+		NameInputDialog* agendaDialog;		
 };
 
 #endif
