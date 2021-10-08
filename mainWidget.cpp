@@ -112,6 +112,7 @@ void MainWidget::onDeleteAgendaButtonReleased(){
 	agendaModelList.removeAt(index);
 	if(agendaModelList.isEmpty()){
 		agendaListView->setModel(NULL);
+		currentAgenda = NULL;
 	}
 }
 
