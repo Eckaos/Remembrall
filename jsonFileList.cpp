@@ -3,13 +3,6 @@
 #include <QDir>
 
 
-Qt::ItemFlags JsonFileList::flags(const QModelIndex &index)const {
-	if(!index.isValid()){
-		return Qt::ItemIsEnabled;
-	}
-	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
-}
-
 int JsonFileList::rowCount(const QModelIndex &parent)const{
 	Q_UNUSED(parent);
 	return fileList.size();
@@ -27,15 +20,6 @@ QVariant JsonFileList::data(const QModelIndex &index, int role)const{
 	}else{
 		return QVariant();
 	}
-}
-
-bool JsonFileList::setData(const QModelIndex &index, const QVariant &value, int role){
-	if(index.isValid() && role == Qt::EditRole){
-		fileList.replace(index.row(),value.toString());
-		emit dataChanged(index, index, {role});
-		return true;
-	}
-	return false;
 }
 
 void JsonFileList::addFile(QString &fileName){

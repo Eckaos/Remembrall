@@ -17,13 +17,6 @@ QList<Task> Agenda::getTaskList(){
 	return taskList;
 }
 
-Qt::ItemFlags Agenda::flags(const QModelIndex &index)const{
-	if(!index.isValid()){
-		return Qt::ItemIsEnabled;
-	}
-	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
-}
-
 int Agenda::rowCount(const QModelIndex &parent)const{
 	Q_UNUSED(parent);
 	return taskList.size();
@@ -42,15 +35,6 @@ QVariant Agenda::data(const QModelIndex &index, int role)const{
 	}else{
 		return QVariant();
 	}
-}
-
-bool Agenda::setData(const QModelIndex &index, const QVariant &value, int role){
-	if(index.isValid() && role == Qt::EditRole){
-		taskList.replace(index.row(),value.value<Task>());
-		emit dataChanged(index, index, {role});
-		return true;
-	}
-	return false;
 }
 
 void Agenda::read(const QJsonObject &json){
