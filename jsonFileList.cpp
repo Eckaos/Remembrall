@@ -2,6 +2,7 @@
 #include <QJsonDocument>
 #include <QDir>
 
+JsonFileList::JsonFileList(QString dirPath): dir(dirPath){}
 
 int JsonFileList::rowCount(const QModelIndex &parent)const{
 	Q_UNUSED(parent);

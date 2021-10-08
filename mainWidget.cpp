@@ -41,7 +41,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent){
 	mainLayout->addLayout(listBox);
 	mainLayout->addLayout(toolBar);
 
-	fileList = new JsonFileList();
+	fileList = new JsonFileList("json");
 	fileList->loadAllFile();
 	fileList->loadAllAgendas(agendaModelList);
 	agendaListView->setModel(fileList);

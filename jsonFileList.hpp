@@ -12,7 +12,7 @@
 class JsonFileList : public QAbstractListModel{
 
 	public:
-		JsonFileList(): dir("json"){};
+		JsonFileList(QString dirPath);
 
 		int rowCount(const QModelIndex &parent = QModelIndex())const;
 		QVariant data(const QModelIndex &index, int role = Qt::DisplayRole)const;
