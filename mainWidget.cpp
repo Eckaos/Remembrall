@@ -89,6 +89,11 @@ void MainWidget::onNewTaskButtonReleased(){
 		currentAgenda->addTask(t);	
 		taskTitleLine->clear();
 		//TODO open file in overwrite get the jsonObject and write it
+		QFile file("json/"+agendaListView->currentIndex().data().toString()+".json");
+		file.open(QIODevice::WriteOnly);
+		QJsonObject jObj = QJsonDocument().object();
+		currentAgenda->write(jObj);
+		file.write(QJsonDocument(jObj).toJson());
 	}
 }
 
@@ -98,6 +103,11 @@ void MainWidget::onDeleteTaskButtonReleased(){
 	s = s.section('-',1,1).trimmed();
 	Task t(s,d);
 	currentAgenda->deleteTask(t);
+	QFile file("json/"+agendaListView->currentIndex().data().toString()+".json");
+	file.open(QIODevice::WriteOnly);
+	QJsonObject jObj = QJsonDocument().object();
+	currentAgenda->write(jObj);
+	file.write(QJsonDocument(jObj).toJson());	
 }
 
 void MainWidget::onAgendaClick(QItemSelection item){
