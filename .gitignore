@@ -30,6 +30,7 @@
 *.out
 *.app
 *.pro
+.ccls-cache
 Remembrall-C++/Makefile
 Remembrall-C++/.ccls-cache
 Remembrall-C++/compile_commands.json
