@@ -1,11 +1,10 @@
 #include <QApplication>
-#include <mainWidget.hpp>
+#include "mainWidget.hpp"
 #include <QScreen>
 #include <QStyleFactory>
 
 int main(int argc, char *argv[]){
 	QApplication app(argc, argv);
-	QFile file("stylesheet.qss");
 	MainWidget w;	
 	w.setWindowState(Qt::WindowMaximized);
 	w.show();
