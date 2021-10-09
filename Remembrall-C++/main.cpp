@@ -9,6 +9,6 @@ int main(int argc, char *argv[]){
 	w.setWindowState(Qt::WindowMaximized);
 	w.show();
 	app.setWindowIcon(QIcon("Remembrall-2-icon.png"));
-
+	
 	return app.exec();
 }
