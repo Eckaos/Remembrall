@@ -1,0 +1,71 @@
+#filters{
+    flex: 3;
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    text-align: center;
+}
+
+#filters>.priority{
+    text-align: left;
+}
+
+#filters>#tag-input-filter{
+    text-align: center;
+}  
+
+#filters>#tag-list-filter{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left:0;
+    right:0;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+    width: 80%;
+    padding-left: 1.5em;
+    overflow-y: scroll;
+}
+
+#filters>#tag-list-container{
+    position: relative;
+    margin-bottom: 1.5rem;
+    height: 40%;
+}
+
+#filters>#tag-strictness-filter{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+#filters>#tag-strictness-filter>input{
+    margin-right: 0.5rem;
+}
+
+.tag-invisible{
+    display: none;
+}
+
+#filters>#time-range{
+    display: flex;
+    align-items: center;
+}
+
+#filters>#time-range>label{
+    margin: auto;
+    width: 100%;
+    text-align: center;
+    border: 0.01rem solid var(--fg);
+}
+
+#filters input[type="text"]{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    height:1.125em;
+}

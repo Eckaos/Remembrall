@@ -1,0 +1,86 @@
+:root{
+  --bg: #272727;
+  --text: white;
+  --fg: #353434;
+  --color1: #FF652F;
+  --color2: #FFE400;
+  --color3: #14A76C;
+
+  /*--bg: #1A1A1D;
+  --color1: #4E4E50;
+  --color2: #6F2232;
+  --color3: #950740;
+  --color4: #C3073F;*/
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+*::-webkit-scrollbar{
+    background: var(--bg);
+    width: 1.5em;
+}
+
+*::-webkit-scrollbar-thumb{
+    background: var(--color3);
+    border-radius: 2em;
+    border: 0.5em solid var(--bg);
+}
+
+html{
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 0.1rem
+}
+
+::placeholder{
+  font-family: 'Courier New', Courier, monospace;
+}
+
+html, body{
+  height: 100%;
+  width: 100%;
+  user-select: none;
+}
+
+body{
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+#menu-bar {
+  display: flex;
+  flex-direction: column;
+  border-right: 0.01rem solid var(--fg);
+  font-size: 2rem;
+  flex: 1;
+}
+
+#menu-bar div{
+  color: var(--text);
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  cursor: pointer;
+}
+
+#menu-bar div:hover{
+  background-color: var(--fg);
+}
+
+#menu-bar .selected{
+  background-color: var(--fg);
+  
+  border-left: 0.4rem solid var(--color2);
+}
+
+#content{
+  display: flex;
+  flex-direction: row;
+  flex: 5;
+}

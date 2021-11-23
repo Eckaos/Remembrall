@@ -1,0 +1,148 @@
+@import url('task.css');
+@import url('task-maker.css');
+@import url('tag.css');
+@import url('filters.css');
+@import url('calendar.css');
+
+:root{
+  --bg: #272727;
+  --text: white;
+  --fg: #353434;
+  --color1: #FF652F;
+  --color2: #FFE400;
+  --color3: #14A76C;
+}
+
+#agenda {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+#task-related{
+    flex: 5;
+    display: flex;
+    flex-direction: column;
+}
+
+#calendar-filter{
+    flex: 1;
+    border-left: 0.01rem solid var(--fg);
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+}
+
+.title{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+#task-list{
+    flex: 30;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
+#calendar{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 250px;
+}
+
+#calendar>#day{
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+    box-sizing: border-box;
+}
+
+#day>div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calendar-day{
+    font-weight: 600;
+    color: var(--color2);
+    margin: 0;
+}
+.calendar-number{
+    color: var(--color3);
+    cursor: pointer;
+}
+.calendar-month{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.calendar-number:hover, .calendar-number-selected{
+    background-color: var(--fg);
+}
+
+.priority{
+    cursor: pointer;
+    color: var(--color2);
+}
+
+.calendar-arrow{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:25px;
+    width:25px;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+.calendar-arrow:hover{
+    background-color: var(--fg);
+    color: var(--color3);
+}
+
+.delete-btn{
+    cursor: pointer;
+}
+
+.delete-btn:hover{
+    color: var(--color1);
+}
+
+::-webkit-input-placeholder {
+   text-align: center;
+}
+
+textarea, input{
+    background-color: var(--fg);
+    color: var(--color2);
+    border: none;
+    resize: none;
+    max-height: 5em;
+    height:1.125em;
+    outline: none;
+}
+
+::placeholder{
+    color: var(--color3);
+}
+
+input[type="radio"]{
+    display: none;
+}
+
+input[type="radio"]:checked + label{
+    background-color: var(--fg);
+    color: var(--color2);
+}
