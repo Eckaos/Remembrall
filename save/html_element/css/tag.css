@@ -1,0 +1,22 @@
+.tag{
+    display: flex;
+    width: fit-content;
+    height: fit-content;
+    border: 0.01rem solid var(--fg);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.tag>div:first-child{
+    flex: 1;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+.tag .delete-btn{
+    cursor: pointer;
+}
+.tag .delete-btn:hover{
+    color: red;
+}

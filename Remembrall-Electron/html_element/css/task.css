@@ -2,6 +2,7 @@
 .task{
     background-color: var(--fg);
     color: white;
+    margin-top: 0.5rem;
     /*background: linear-gradient(135deg, var(--color3) 0%, var(--color3) 51%, var(--color1) 51%, var(--color1) 100%);*/
 }
 

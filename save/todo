@@ -1,0 +1,25 @@
+3- month circle through et task en vrac trier par ...
+
+enlever les console.log
+
+refactor ce que je peux
+
+choisir une police d'écriture
+enlever la barre d'application ou la modifier
+enlever la barre avec file etc...
+
+
+update theme selector when delete task
+mettre tous les elmt html dans un fichier a part
+rename theme by tag
+keyboard shortcut & rajouter une page (menu bar btn pour avoir une cheatsheet)
+
+
+menu bar remove high priority
+
+REFACTOR :
+
+Add event listener voir ce que je peux changer(les appeler dans les methodes ou je les créer ou les transformer en fonction);
+Rename
+voir ce que je peux faire de mieux en code
+alléger le css et le fragmenter?

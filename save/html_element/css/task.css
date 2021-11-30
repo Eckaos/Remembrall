@@ -1,0 +1,36 @@
+/*Voir si je fait moitié une couleur moitié l'autre  ou dégradé ou gardé en couleur uniforme*/
+.task{
+    background-color: var(--fg);
+    color: white;
+    /*background: linear-gradient(135deg, var(--color3) 0%, var(--color3) 51%, var(--color1) 51%, var(--color1) 100%);*/
+}
+
+.task>summary{
+    display: flex;
+    color: white;
+    height: 2rem;
+    outline: none;
+}
+
+.task>summary>*{
+    align-self: center;
+}
+
+.task .task-title{
+    flex: 1;
+    margin-left: 1em;
+    color: white;
+}
+
+.task .delete-btn{
+    margin-left: auto;
+    cursor: pointer;
+    color: white;
+}
+
+.task-description{
+    padding-left: 1em;
+    min-height: 2rem;
+    display: flex;
+    align-items: center;
+}

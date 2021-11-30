@@ -19,6 +19,7 @@ menu bar remove high priority
 
 REFACTOR :
 
+voir si je peux pas fractionner les classe en plus petite classes
 Add event listener voir ce que je peux changer(les appeler dans les methodes ou je les créer ou les transformer en fonction);
 Rename
 voir ce que je peux faire de mieux en code

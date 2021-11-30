@@ -1,0 +1,15 @@
+{
+  "name": "Remembrall",
+  "version": "1.0.0",
+  "description": "Remembrall",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && electron ."
+  },
+  "author": "Eckaos",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^4.5.2"
+  }
+}

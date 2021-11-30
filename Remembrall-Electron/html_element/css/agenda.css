@@ -41,7 +41,7 @@
     margin-bottom: 2rem;
 }
 
-#task-list{
+.task-list{
     flex: 30;
     width: 80%;
     display: flex;
@@ -145,4 +145,8 @@ input[type="radio"]{
 input[type="radio"]:checked + label{
     background-color: var(--fg);
     color: var(--color2);
+}
+
+.invisible{
+    display: none;
 }
