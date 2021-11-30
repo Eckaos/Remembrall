@@ -1,12 +1,12 @@
 import { Calendar } from "../model/Calendar";
 import { weekDay, equals, monthsName, lesser } from "../Utils/DateUtils";
-import { TaskListView } from "./TaskListView";
+import { AgendaTaskListView } from "./TaskListView";
 
 export class CalendarView {
     private _calendar: Calendar;
     private _calendar_elmt: Element;
     private _day_elmt: Element;
-    private _task_list_view: TaskListView;
+    private _task_list_view: AgendaTaskListView;
 
     private _year: number;
     private _month: number;
@@ -21,7 +21,7 @@ export class CalendarView {
     }
 
 
-    public set task_list_view(v: TaskListView) {
+    public set task_list_view(v: AgendaTaskListView) {
         this._task_list_view = v;
     }
 

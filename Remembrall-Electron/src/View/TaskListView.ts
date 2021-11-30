@@ -1,36 +1,88 @@
 import { Calendar } from "../model/Calendar";
-import { Task } from "../model/Task";
+import { AgendaTask, Task } from "../model/Task";
 import { getFirstDayOfWeek, monthsName, transformDateToFileName, transformDateToFrDate, weekDay } from "../Utils/DateUtils";
-import { fromJson, fs, getTaskPath, toJson } from "../Utils/JSONUtils";
+import { fs, getTaskPath } from "../Utils/JSONUtils";
 import { CalendarView } from "./CalendarView";
-import { TaskMakerView } from "./TaskMakerView";
-import { FilterView } from "./FilterView";
+import { AgendaTaskMakerView } from "./TaskMakerView";
+import { FilterView } from "./FilterView/FilterView";
 import { TaskView } from "./TaskView";
 
+export abstract class TaskListView {
+    protected _task_list_elmt: Element;
+    protected _title_elmt: Element;
 
-export class TaskListView {
-    private _taskArray: Task[];
-    private _task_list_elmt: Element;
-    private _filter_view: FilterView;
-    private _calendar_view: CalendarView;
-    private _title_elmt: Element;
-    private _calendar: Calendar;
-
-    constructor(task_list_elmt: Element, title_elmt: Element, filter_view: FilterView, calendar_view: CalendarView, calendar: Calendar) {
-        this._taskArray = [];
+    constructor(task_list_elmt: Element, title_elmt: Element) {
         this._task_list_elmt = task_list_elmt;
-        this._filter_view = filter_view;
-        this._calendar_view = calendar_view;
         this._title_elmt = title_elmt;
-        this._calendar = calendar;
-        filter_view.task_list_view = this;
-        calendar_view.task_list_view = this;
+    }
+
+    public abstract update();
+    public abstract removeTask(task: Task);
+    public abstract get taskArray();
+
+}
+
+export class ToDoTaskListView extends TaskListView {
+
+    private _taskArray: Task[];
+
+    constructor(task_list_elmt: Element, title_elmt: Element) {
+        super(task_list_elmt, title_elmt);
+        this._taskArray = [];
+        this._title_elmt.innerHTML = "TODO";
     }
 
     public get taskArray(): Task[] {
         return this._taskArray;
     }
 
+    public get title_elmt(): Element {
+        return this._title_elmt;
+    }
+
+    public update() {
+        this.loadTasks()
+        this.display();
+    }
+
+    private display() {
+        for (let i = 0; i < this._taskArray.length; i++) {
+            const task = this._taskArray[i];
+            this._task_list_elmt.appendChild(new TaskView(this, task).elmt);
+        }
+    }
+
+    private loadTasks() {
+        this._taskArray = Task.fromJson(getTaskPath(this._title_elmt.innerHTML + ".json"));
+    }
+
+    public removeTask(task: Task) {
+        this.taskArray.splice(this.taskArray.indexOf(task), 1);
+        var taskFilePath: string = getTaskPath(this._title_elmt.innerHTML + ".json");
+        if (this.taskArray.length === 0) fs.unlinkSync(taskFilePath);
+        else Task.toJson(this.taskArray, taskFilePath);
+    }
+}
+
+export class AgendaTaskListView extends TaskListView {
+    private _taskArray: AgendaTask[];
+    private _filter_view: FilterView;
+    private _calendar_view: CalendarView;
+    private _calendar: Calendar;
+
+    constructor(task_list_elmt: Element, title_elmt: Element, filter_view: FilterView, calendar_view: CalendarView, calendar: Calendar) {
+        super(task_list_elmt, title_elmt);
+        this._taskArray = [];
+        this._filter_view = filter_view;
+        this._calendar_view = calendar_view;
+        this._calendar = calendar;
+        filter_view.task_list_view = this;
+        calendar_view.task_list_view = this;
+    }
+
+    public get taskArray(): AgendaTask[] {
+        return this._taskArray;
+    }
 
     public update() {
         this.loadTasks();
@@ -41,9 +93,9 @@ export class TaskListView {
         this.clearView();
         for (let i = 0; i < this._taskArray.length; i++) {
             const task = this._taskArray[i];
+            if (this._filter_view.nameFilter() != "" && !task.title.includes(this._filter_view.nameFilter())) continue;
             if (!task.priority && this._filter_view.getPriorityActive()) continue;
-            if (this._filter_view.themes.length > 0 && this._filter_view.isThemeStrict() && !equals(this._filter_view.themes, task.tags)) continue;//strict
-            if (this._filter_view.themes.length > 0 && !this._filter_view.isThemeStrict() && !task.tags.some(theme => this._filter_view.themes.includes(theme))) continue;//non strict
+            if (this._filter_view.tags.length > 0 && !task.tags.some(theme => this._filter_view.tags.includes(theme))) continue;//non strict
             this._task_list_elmt.appendChild(new TaskView(this, task).elmt);
         }
     }
@@ -64,12 +116,12 @@ export class TaskListView {
                 this.loadOneDay();
                 break;
         }
-        this._filter_view.updateThemes(this._taskArray);
+        this._filter_view.update(this._taskArray);
     }
 
     private loadOneDay() {
         var file = transformDateToFileName(this._calendar.selected_day) + ".json";
-        if (fs.existsSync(getTaskPath(file))) this._taskArray = fromJson(getTaskPath(file));
+        if (fs.existsSync(getTaskPath(file))) this._taskArray = AgendaTask.fromJson(getTaskPath(file));
         this._title_elmt.innerHTML = weekDay[this._calendar.selected_day.getDay()] + " " + transformDateToFrDate(this._calendar.selected_day);
     }
 
@@ -78,7 +130,7 @@ export class TaskListView {
         this._title_elmt.innerHTML = "Week of " + transformDateToFrDate(d);
         for (let i = 0; i < 7; i++) {
             var file = transformDateToFileName(d) + ".json";
-            if (fs.existsSync(getTaskPath(file))) this._taskArray = this._taskArray.concat(fromJson(getTaskPath(file)));
+            if (fs.existsSync(getTaskPath(file))) this._taskArray = this._taskArray.concat(AgendaTask.fromJson(getTaskPath(file)));
             d.setDate(d.getDate() + 1);
         }
     }
@@ -88,7 +140,7 @@ export class TaskListView {
         for (let i = 1; i <= day_number; i++) {
             var d: Date = new Date(this._calendar_view.year, this._calendar_view.month, i);
             var file = transformDateToFileName(d) + ".json";
-            if (fs.existsSync(getTaskPath(file))) this._taskArray = this._taskArray.concat(fromJson(getTaskPath(file)));
+            if (fs.existsSync(getTaskPath(file))) this._taskArray = this._taskArray.concat(AgendaTask.fromJson(getTaskPath(file)));
         }
         this._title_elmt.innerHTML = monthsName[this._calendar_view.month];
     }
@@ -97,14 +149,15 @@ export class TaskListView {
         this._task_list_elmt.innerHTML = '';
     }
 
-    public removeTask(task: Task) {
+    public removeTask(task: AgendaTask) {
         this.taskArray.splice(this.taskArray.indexOf(task), 1);
         var taskFilePath: string = getTaskPath(transformDateToFileName(new Date(task.date)) + ".json");
-        var taskArrayFromTaskDate: Task[] = fromJson(taskFilePath);
+        var taskArrayFromTaskDate: AgendaTask[] = AgendaTask.fromJson(taskFilePath);
+        console.log(task.date)
         taskArrayFromTaskDate.splice(taskArrayFromTaskDate.indexOf(task), 1);
         if (taskArrayFromTaskDate.length === 0) fs.unlinkSync(taskFilePath);
-        else toJson(taskArrayFromTaskDate, taskFilePath);
-        this._filter_view.updateThemes(this.taskArray);
+        else AgendaTask.toJson(taskArrayFromTaskDate, taskFilePath);
+        this._filter_view.update(this.taskArray);
     }
 
 }

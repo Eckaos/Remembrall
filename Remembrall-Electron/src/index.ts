@@ -1,5 +1,4 @@
 import { app, BrowserWindow } from "electron";
-const path = require("path");
 export let mainWindow: BrowserWindow
 
 app.on("ready", createWindows);

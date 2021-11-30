@@ -1,6 +1,6 @@
-import { Task } from "../model/Task";
+import { AgendaTask, Task } from "../model/Task";
 import { createDeleteElmt, priorityListener } from "../Utils/FunctionUtils";
-import { TaskListView } from "./TaskListView";
+import { AgendaTaskListView, TaskListView } from "./TaskListView";
 
 export class TaskView {
 
